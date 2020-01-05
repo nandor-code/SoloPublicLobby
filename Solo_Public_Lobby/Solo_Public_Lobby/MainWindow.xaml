@@ -42,7 +42,7 @@
         </Button>
         <Label x:Name="lblInfo" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="276" Height="119" FontSize="18" BorderBrush="{x:Null}" Foreground="White" Background="#FF007BFF" FontWeight="SemiBold">
             <StackPanel Height="119" Width="283" Orientation="Horizontal" Margin="0">
-                <Label x:Name="lblInstructions" Content="1. Activate the rules.&#xA;2. Join GTA online.&#xD;&#xA;3. Disable the rules.*&#xA;4. Invite your friends.*&#xA;5. Enable the rules.*&#xA;&#xD;&#xA;*Only when not playing solo." Width="173" VerticalContentAlignment="Center" Foreground="#FFFFFCFC" Margin="0,-10,0,0" FontSize="12"/>
+                <Label x:Name="lblInstructions" Content="1. Activate the rules.&#xA;2. Launch your game.&#xA;3. Disable the rules.*&#xA;4. Invite your friends.*&#xA;5. Enable the rules.*&#xA;&#xA;*Only when not playing solo." Width="173" VerticalContentAlignment="Center" Foreground="#FFFFFCFC" Margin="0,-10,0,0" FontSize="12"/>
                 <Image x:Name="image2" Width="142" Source="/CodeSwine-Solo_Public_Lobby;component/ImageResources/help.png" RenderTransformOrigin="0.5,0.5" Margin="0">
                     <Image.RenderTransform>
                         <TransformGroup>
@@ -78,7 +78,6 @@
         </Button>
 
         <!-- Row 3 -->
-        <Label x:Name="lblCredits" Content="Made by CodeSwine." Grid.Column="2" HorizontalAlignment="Left" Margin="165,0,0,0" Grid.Row="3" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.554" Width="123" Height="33" Foreground="#FF707C80"/>
         <ListBox x:Name="lsbAddresses" Grid.Column="1" HorizontalAlignment="Left" Height="183" Margin="11,46,0,0" Grid.Row="1" Grid.RowSpan="2" VerticalAlignment="Top" Width="276"/>
         <TextBox x:Name="txbIpToAdd" Grid.Column="2" HorizontalAlignment="Left" Height="72" Margin="10,9,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="275" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Text="192.0.0.1" Foreground="#FF707C80" FontWeight="Bold" FontSize="18"/>
         <Button x:Name="btnDelete" Grid.Column="1" HorizontalAlignment="Left" Margin="10,88,0,0" Grid.Row="2" VerticalAlignment="Top" Width="277" Height="40" BorderBrush="{x:Null}" FontSize="18" Foreground="#FFFDFDFD" Background="#FFDC3545" Click="btnDelete_Click">
@@ -88,13 +87,8 @@
             </StackPanel>
         </Button>
         <Border BorderBrush="#FFABADB3" BorderThickness="1" Grid.Column="2" HorizontalAlignment="Left" Height="132" Margin="9,2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="277"/>
-        <Image x:Name="image5" Grid.Column="2" HorizontalAlignment="Left" Height="41" Margin="14,91,0,0" Grid.Row="2" VerticalAlignment="Top" Width="41" Source="ImageResources/Github.png"/>
-        <Label x:Name="label2" Content="github.com/CodeSwine" Grid.Column="2" HorizontalAlignment="Left" Margin="55,102,0,0" Grid.Row="2" VerticalAlignment="Top" Width="226" Foreground="#FF707C80"/>
-        <Image x:Name="image6" Grid.Column="2" HorizontalAlignment="Left" Height="42" Margin="14,53,0,0" Grid.Row="2" VerticalAlignment="Top" Width="42" Source="ImageResources/mpgh.PNG"/>
-        <Label x:Name="label2_Copy" Content="forum/member.php?u=4577569" Grid.Column="2" HorizontalAlignment="Left" Margin="55,58,0,0" Grid.Row="2" VerticalAlignment="Top" Width="226" Foreground="#FF707C80"/>
-        <Image x:Name="image6_Copy" Grid.Column="2" HorizontalAlignment="Left" Height="42" Margin="14,8,0,0" Grid.Row="2" VerticalAlignment="Top" Width="42" Source="ImageResources/5mods.jpg"/>
-        <Label x:Name="label2_Copy1" Content="gta5-mods.com/users/CodeSwine" Grid.Column="2" HorizontalAlignment="Left" Margin="56,16,0,0" Grid.Row="2" VerticalAlignment="Top" Width="226" Foreground="#FF707C80"/>
         <Label x:Name="label3" Content="Hotkey: CTRL+F10 to toggle." HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="3" VerticalAlignment="Top" Height="28" Width="276" FontWeight="Bold" Foreground="#FF707C80"/>
         <Label x:Name="lblAdmin" Content="Please start this program as administrator!" Foreground="Red" Visibility="Hidden" Grid.Column="1" HorizontalAlignment="Left" Margin="11,0,0,0" Grid.Row="3" VerticalAlignment="Top" RenderTransformOrigin="0.196,0.126"/>
+        <Button x:Name="CopyIPButton" Content="Copy IP" Grid.Column="2" HorizontalAlignment="Left" Margin="211,23,0,0" VerticalAlignment="Top" Width="75" Click="copyIPButtonClicked"/>
     </Grid>
 </Window>

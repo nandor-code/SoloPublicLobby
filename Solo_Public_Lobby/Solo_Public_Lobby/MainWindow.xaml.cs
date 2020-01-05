@@ -220,5 +220,11 @@ namespace Solo_Public_Lobby
             SetRules();
             System.Media.SystemSounds.Hand.Play();
         }
+
+        private void copyIPButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(this.iPTool.IpAddress.ToString().TrimEnd('\r', '\n'));
+            return;
+        }
     }
 }
