@@ -1,9 +1,10 @@
-﻿<Window x:Class="Solo_Public_Lobby.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Solo_Public_Lobby"
+        xmlns:local1="clr-namespace:Solo_Public_Lobby;assembly=Solo-Public-Loby" x:Class="Solo_Public_Lobby.MainWindow"
         mc:Ignorable="d"
         Title="Private Public Lobby" Height="400" Width="923" ResizeMode="CanMinimize">
 
@@ -27,7 +28,7 @@
         <!-- Row 1 & 2 -->
         <Button x:Name="btnEnableDisable" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="276" Height="120" RenderTransformOrigin="0.5,0.5" Foreground="White" Background="#FFDC3545" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" FontWeight="SemiBold" BorderBrush="{x:Null}" Click="btnEnableDisable_Click">
             <StackPanel Height="120" Width="273" Orientation="Horizontal">
-                <Label x:Name="lblLock" Content="Rules not active.&#xD;&#xA;Click to activate!" Width="193" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFF7F5F5"/>
+                <Label x:Name="lblLock" Content="Rules not active.&#xA;Click to activate!" Width="193" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FFF7F5F5"/>
                 <Image x:Name="image4" Width="100" Source="/CodeSwine-Solo_Public_Lobby;component/ImageResources/unlocked.png" RenderTransformOrigin="0.5,0.5">
                     <Image.RenderTransform>
                         <TransformGroup>
@@ -86,7 +87,16 @@
                 <Label x:Name="label" Content="Delete selected IP." Foreground="#FFFFFCFC" FontWeight="SemiBold"/>
             </StackPanel>
         </Button>
-        <Border BorderBrush="#FFABADB3" BorderThickness="1" Grid.Column="2" HorizontalAlignment="Left" Height="132" Margin="9,2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="277"/>
+        <Border BorderBrush="#FFABADB3" BorderThickness="1" Grid.Column="2" HorizontalAlignment="Left" Height="132" Margin="9,2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="277">
+            <ListView x:Name="gameGrid" ItemsSource="{Binding games}" SelectionChanged="gameGrid_SelectionChanged" IsSynchronizedWithCurrentItem="True" SelectedIndex="0">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn x:Name="Game" Header="Game" DisplayMemberBinding="{Binding GameName, BindsDirectlyToSource=True, NotifyOnSourceUpdated=True}"/>
+                        <GridViewColumn x:Name="GameEnabled" Header="Rules Enabled" DisplayMemberBinding="{Binding Enabled, BindsDirectlyToSource=True, NotifyOnSourceUpdated=True}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Border>
         <Label x:Name="label3" Content="Hotkey: CTRL+F10 to toggle." HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Row="3" VerticalAlignment="Top" Height="28" Width="276" FontWeight="Bold" Foreground="#FF707C80"/>
         <Label x:Name="lblAdmin" Content="Please start this program as administrator!" Foreground="Red" Visibility="Hidden" Grid.Column="1" HorizontalAlignment="Left" Margin="11,0,0,0" Grid.Row="3" VerticalAlignment="Top" RenderTransformOrigin="0.196,0.126"/>
         <Button x:Name="CopyIPButton" Content="Copy IP" Grid.Column="2" HorizontalAlignment="Left" Margin="211,23,0,0" VerticalAlignment="Top" Width="75" Click="copyIPButtonClicked"/>

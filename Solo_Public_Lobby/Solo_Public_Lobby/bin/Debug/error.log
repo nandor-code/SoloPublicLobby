@@ -10,3 +10,5 @@ The given path's format is not supported.
 The request was aborted: Could not create SSL/TLS secure channel.
 Access is denied. (Exception from HRESULT: 0x80070005 (E_ACCESSDENIED))
 Access is denied. (Exception from HRESULT: 0x80070005 (E_ACCESSDENIED))
+Access is denied. (Exception from HRESULT: 0x80070005 (E_ACCESSDENIED))
+Access is denied. (Exception from HRESULT: 0x80070005 (E_ACCESSDENIED))

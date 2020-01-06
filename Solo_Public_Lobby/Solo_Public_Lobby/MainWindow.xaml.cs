@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,23 +21,104 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 
 namespace Solo_Public_Lobby
 {
+    public class Game : INotifyPropertyChanged
+    {
+        Game()
+        {
+            active  = false;
+            created = false;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        public string GetTCPRuleName(string szDirection)
+        {
+           return this.GameName + " - Private Public Lobby TCP::" + szDirection;
+        }
+
+        public string GetUDPRuleName(string szDirection)
+        {
+            return this.GameName + " - Private Public Lobby UDP::" + szDirection;
+        }
+
+        public string GameName { get; set; }
+        public string udpPorts { get; set; }
+        public string tcpPorts { get; set; }
+        public bool active { get { return _active; } set { _active = value; OnPropertyChanged("Enabled"); } }
+        private bool _active { get; set; }
+        public bool created { get; set; }
+
+        public string Enabled
+        {
+            get
+            {
+                return active ? "✔" : "❌";
+            }
+        }
+
+    }
     public partial class MainWindow : Window
     {
         private IPTool iPTool = new IPTool();
         private DaWhitelist whiteList = new DaWhitelist();
         private List<IPAddress> addresses = new List<IPAddress>();
         private MWhitelist mWhitelist = new MWhitelist();
+        private bool bInitComplete = false;
 
-        private bool set = false;
-        private bool active = false;
+        public ObservableCollection<Game> games
+        {
+            get { return _games; }
+            set
+            {
+                if (_games != value)
+                {
+                    _games = value;
+                }
+            }
+        }
+
+        private ObservableCollection<Game> _games { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+
+            games = new ObservableCollection<Game>();
+
+            // Read games info.
+            var jsonGamesString = File.ReadAllText("games.json");
+
+            JsonTextReader reader = new JsonTextReader(new StringReader(jsonGamesString));
+            reader.SupportMultipleContent = true;
+
+            while (true)
+            {
+                if (!reader.Read())
+                {
+                    break;
+                }
+
+                JsonSerializer serializer = new JsonSerializer();
+                Game game = serializer.Deserialize<Game>(reader);
+
+                games.Add(game);
+            }
+
+            DataContext = this;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -53,6 +137,8 @@ namespace Solo_Public_Lobby
                 mWhitelist.Ips.Add(ip.ToString());
             }
             SetIpCount();
+
+            bInitComplete = true;
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
@@ -65,10 +151,10 @@ namespace Solo_Public_Lobby
                     lsbAddresses.Items.Refresh();
                     mWhitelist.Ips.Add(txbIpToAdd.Text);
                     DaWhitelist.SaveToJson(mWhitelist);
-                    set = false; active = false;
-                    FirewallRule.DeleteRules();
+                    getSelectedGame().created = false; getSelectedGame().active = false;
+                    FirewallRule.DeleteRules( getSelectedGame() );
                     SetIpCount();
-                    UpdateNotActive();
+                    UpdateActive();
                 }
             }
         }
@@ -81,11 +167,16 @@ namespace Solo_Public_Lobby
                 addresses.Remove(IPAddress.Parse(lsbAddresses.SelectedItem.ToString()));
                 lsbAddresses.Items.Refresh();
                 DaWhitelist.SaveToJson(mWhitelist);
-                set = false; active = false;
-                FirewallRule.DeleteRules();
+                getSelectedGame().created = false; getSelectedGame().active = false;
+                FirewallRule.DeleteRules( getSelectedGame() );
                 SetIpCount();
-                UpdateNotActive();
+                UpdateActive();
             }
+        }
+
+        private Game getSelectedGame()
+        {
+            return gameGrid.HasItems ? games[gameGrid.SelectedIndex] : null;
         }
 
         private void SetIpCount()
@@ -103,48 +194,59 @@ namespace Solo_Public_Lobby
             string remoteAddresses = RangeCalculator.GetRemoteAddresses(addresses);
 
             // If the firewall rules aren't set yet.
-            if (!set)
+            if (!getSelectedGame().created)
             {
-                FirewallRule.CreateInbound(remoteAddresses, true, false);
-                FirewallRule.CreateOutbound(remoteAddresses, true, false);
-                active = true;
-                set = true;
-                UpdateActive();
+                if (FirewallRule.CreateInbound(remoteAddresses, this.getSelectedGame(), true, false) &&
+                    FirewallRule.CreateOutbound(remoteAddresses, this.getSelectedGame(), true, false))
+                {
+                    getSelectedGame().active = true;
+                    getSelectedGame().created = true;
+                    UpdateActive();
+                }
                 return;
             }
 
             // If they are set but not enabled.
-            if (set && !active)
+            if (getSelectedGame().created && !getSelectedGame().active)
             {
-                FirewallRule.CreateInbound(remoteAddresses, true, true);
-                FirewallRule.CreateOutbound(remoteAddresses, true, true);
-                active = true;
-                UpdateActive();
+                if (FirewallRule.CreateInbound(remoteAddresses, this.getSelectedGame(), true, true) &&
+                    FirewallRule.CreateOutbound(remoteAddresses, this.getSelectedGame(), true, true))
+                {
+                    getSelectedGame().active = true;
+                    UpdateActive();
+                }
                 return;
             }
 
             // If they are active and set.
-            if(active && set)
+            if(getSelectedGame().created && getSelectedGame().active)
             {
-                FirewallRule.CreateInbound(remoteAddresses, false, true);
-                FirewallRule.CreateOutbound(remoteAddresses, false, true);
-                UpdateNotActive();
-                active = false;
+                if (FirewallRule.CreateInbound(remoteAddresses, this.getSelectedGame(), false, true) &&
+                    FirewallRule.CreateOutbound(remoteAddresses, this.getSelectedGame(), false, true))
+                {
+                    getSelectedGame().active = false;
+                    UpdateActive();
+                }
+                return;
             }
-        }
-
-        void UpdateNotActive()
-        {
-            btnEnableDisable.Background = ColorBrush.Red;
-            image4.Source = new BitmapImage(new Uri("/CodeSwine-Solo_Public_Lobby;component/ImageResources/unlocked.png", UriKind.Relative));
-            lblLock.Content = "Rules not active." + Environment.NewLine + "Click to activate!";
         }
 
         void UpdateActive()
         {
-            btnEnableDisable.Background = ColorBrush.Green;
-            image4.Source = new BitmapImage(new Uri("/CodeSwine-Solo_Public_Lobby;component/ImageResources/locked.png", UriKind.Relative));
-            lblLock.Content = "Rules active." + Environment.NewLine + "Click to deactivate!";
+            if (!bInitComplete) return;
+
+            if (getSelectedGame().active)
+            {
+                btnEnableDisable.Background = ColorBrush.Green;
+                image4.Source = new BitmapImage(new Uri("/CodeSwine-Solo_Public_Lobby;component/ImageResources/locked.png", UriKind.Relative));
+                lblLock.Content = "Rules active." + Environment.NewLine + "Click to deactivate!";
+            }
+            else
+            {
+                btnEnableDisable.Background = ColorBrush.Red;
+                image4.Source = new BitmapImage(new Uri("/CodeSwine-Solo_Public_Lobby;component/ImageResources/unlocked.png", UriKind.Relative));
+                lblLock.Content = "Rules not active." + Environment.NewLine + "Click to activate!";
+            }
         }
 
         [DllImport("User32.dll")]
@@ -176,7 +278,10 @@ namespace Solo_Public_Lobby
             _source.RemoveHook(HwndHook);
             _source = null;
             UnregisterHotKey();
-            FirewallRule.DeleteRules();
+            foreach (Game g in games)
+            {
+                FirewallRule.DeleteRules(g);
+            }
             base.OnClosed(e);
         }
 
@@ -225,6 +330,11 @@ namespace Solo_Public_Lobby
         {
             Clipboard.SetText(this.iPTool.IpAddress.ToString().TrimEnd('\r', '\n'));
             return;
+        }
+
+        private void gameGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateActive();
         }
     }
 }

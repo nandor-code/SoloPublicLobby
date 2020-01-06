@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-S:\Dev\SoloPublicLobby\Solo_Public_Lobby\Solo_Public_Lobby\obj\Debug\
+\\san-nas\Shared\Dev\SoloPublicLobby\Solo_Public_Lobby\Solo_Public_Lobby\obj\Debug\
 Solo_Public_Lobby
 none
 false
 DEBUG;TRACE
-S:\Dev\SoloPublicLobby\Solo_Public_Lobby\Solo_Public_Lobby\App.xaml
+\\san-nas\Shared\Dev\SoloPublicLobby\Solo_Public_Lobby\Solo_Public_Lobby\App.xaml
 11151548125
 
 131489498558
-151917242048
+152011120026
 MainWindow.xaml;
 
-False
+True
 
