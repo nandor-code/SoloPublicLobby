@@ -35,30 +35,11 @@ namespace Solo_Public_Lobby
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
-
-        public string GetTCPRuleName(string szDirection)
-        {
-           return this.GameName + " - Private Public Lobby TCP::" + szDirection;
-        }
-
-        public string GetUDPRuleName(string szDirection)
-        {
-            return this.GameName + " - Private Public Lobby UDP::" + szDirection;
-        }
-
+        // Interface
         public string GameName { get; set; }
         public string udpPorts { get; set; }
         public string tcpPorts { get; set; }
         public bool active { get { return _active; } set { _active = value; OnPropertyChanged("Enabled"); } }
-        private bool _active { get; set; }
         public bool created { get; set; }
 
         public string Enabled
@@ -68,6 +49,29 @@ namespace Solo_Public_Lobby
                 return active ? "✔" : "❌";
             }
         }
+
+        public string GetTCPRuleName(string szDirection)
+        {
+            return this.GameName + " - Private Public Lobby TCP::" + szDirection;
+        }
+
+        public string GetUDPRuleName(string szDirection)
+        {
+            return this.GameName + " - Private Public Lobby UDP::" + szDirection;
+        }
+
+        // Events
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+
+        //  private functions
+        private bool _active { get; set; }
 
     }
     public partial class MainWindow : Window
