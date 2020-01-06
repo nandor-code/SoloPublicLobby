@@ -88,7 +88,7 @@
             </StackPanel>
         </Button>
         <Border BorderBrush="#FFABADB3" BorderThickness="1" Grid.Column="2" HorizontalAlignment="Left" Height="132" Margin="9,2,0,0" Grid.Row="2" VerticalAlignment="Top" Width="277">
-            <ListView x:Name="gameGrid" ItemsSource="{Binding games}" SelectionChanged="gameGrid_SelectionChanged" IsSynchronizedWithCurrentItem="True" SelectedIndex="0">
+            <ListView x:Name="gameGrid" ItemsSource="{Binding games}" SelectionChanged="gameGrid_SelectionChanged" IsSynchronizedWithCurrentItem="True" SelectedIndex="0" SelectionMode="Single">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn x:Name="Game" Header="Game" DisplayMemberBinding="{Binding GameName, BindsDirectlyToSource=True, NotifyOnSourceUpdated=True}"/>

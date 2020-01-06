@@ -76,6 +76,8 @@ namespace Solo_Public_Lobby
     }
     public partial class MainWindow : Window
     {
+        private static string config = @"games.json";
+
         private IPTool iPTool = new IPTool();
         private DaWhitelist whiteList = new DaWhitelist();
         private List<IPAddress> addresses = new List<IPAddress>();
@@ -98,13 +100,31 @@ namespace Solo_Public_Lobby
 
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();      
             Loaded += MainWindow_Loaded;
 
             games = new ObservableCollection<Game>();
 
             // Read games info.
-            var jsonGamesString = File.ReadAllText("games.json");
+            if( ! File.Exists(config) )
+            {
+                // create it.
+                createConfig(config);
+            }
+
+            readConfig(config);
+
+            DataContext = this;
+        }
+
+        private void createConfig(string config)
+        {
+            File.WriteAllText(config, "{\n   'GameName': 'Destiny 2',\n   'udpPorts': '1119-1120,3097-3196,3724,4000,6112-6114',\n   'tcpPorts': '3074,3724,4000,6112-6114'\n}\n{\n    'GameName': 'GTA Online V',\n    'udpPorts': '6672',\n    'tcpPorts': ''\n}");
+        }
+
+        private void readConfig(string config)
+        {
+            var jsonGamesString = File.ReadAllText(config);
 
             JsonTextReader reader = new JsonTextReader(new StringReader(jsonGamesString));
             reader.SupportMultipleContent = true;
@@ -121,8 +141,6 @@ namespace Solo_Public_Lobby
 
                 games.Add(game);
             }
-
-            DataContext = this;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

@@ -56,10 +56,10 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>02E80CBEC54BB317472C47593C493639735FE662</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>9522B7D0BE52C5B060B8E4F12AFAA343D3E3CA91</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>CodeSwine-Private_Public_Lobby_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Private_Public_Lobby_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
@@ -133,6 +133,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Private_Public_Lobby_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
