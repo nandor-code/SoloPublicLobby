@@ -1,0 +1,12 @@
+  [
+	{
+		"GameName": "Destiny 2",
+		"udpPorts": "1119-1120,3097-3196,3724,4000,6112-6114",
+		"tcpPorts": "3074,3724,4000,6112-6114"
+	},
+	{
+		"GameName": "GTA Online V",
+		"udpPorts": "6672",
+		"tcpPorts": ""
+	}
+]

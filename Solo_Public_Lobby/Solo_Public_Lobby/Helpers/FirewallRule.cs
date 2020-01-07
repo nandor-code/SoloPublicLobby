@@ -124,7 +124,7 @@ namespace Solo_Public_Lobby.Helpers
                 firewallRule.RemoteAddresses = addresses;
             }
 
-            Console.WriteLine(addresses);
+            //Console.WriteLine(addresses);
 
             firewallRule.LocalPorts = proto == RuleProtocol.eRuleProtoTCP ? game.tcpPorts : game.udpPorts;
             firewallRule.Name = proto == RuleProtocol.eRuleProtoTCP ? game.GetTCPRuleName(bOutbound ? "Outbound" : "Inbound") : game.GetUDPRuleName(bOutbound ? "Outbound" : "Inbound");

@@ -119,7 +119,7 @@ namespace Solo_Public_Lobby
 
         private void createConfig(string config)
         {
-            File.WriteAllText(config, "{\n   'GameName': 'Destiny 2',\n   'udpPorts': '1119-1120,3097-3196,3724,4000,6112-6114',\n   'tcpPorts': '3074,3724,4000,6112-6114'\n}\n{\n    'GameName': 'GTA Online V',\n    'udpPorts': '6672',\n    'tcpPorts': ''\n}");
+            File.WriteAllText(config, "[{\n   'GameName': 'Destiny 2',\n   'udpPorts': '1119-1120,3097-3196,3724,4000,6112-6114',\n   'tcpPorts': '3074,3724,4000,6112-6114'\n},\n{\n    'GameName': 'GTA Online V',\n    'udpPorts': '6672',\n    'tcpPorts': ''\n}]");
         }
 
         private void readConfig(string config)
@@ -137,9 +137,7 @@ namespace Solo_Public_Lobby
                 }
 
                 JsonSerializer serializer = new JsonSerializer();
-                Game game = serializer.Deserialize<Game>(reader);
-
-                games.Add(game);
+                games = serializer.Deserialize<ObservableCollection<Game>>(reader);
             }
         }
 
