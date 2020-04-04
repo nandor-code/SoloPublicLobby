@@ -126,7 +126,9 @@ namespace Solo_Public_Lobby.Helpers
 
             //Console.WriteLine(addresses);
 
-            firewallRule.LocalPorts = proto == RuleProtocol.eRuleProtoTCP ? game.tcpPorts : game.udpPorts;
+            // We want to block remote ports, not local ports
+            //firewallRule.LocalPorts = proto == RuleProtocol.eRuleProtoTCP ? game.tcpPorts : game.udpPorts;
+            firewallRule.RemotePorts = proto == RuleProtocol.eRuleProtoTCP ? game.tcpPorts : game.udpPorts;
             firewallRule.Name = proto == RuleProtocol.eRuleProtoTCP ? game.GetTCPRuleName(bOutbound ? "Outbound" : "Inbound") : game.GetUDPRuleName(bOutbound ? "Outbound" : "Inbound");
             firewallRule.Direction = bOutbound ? NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT : NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
 
