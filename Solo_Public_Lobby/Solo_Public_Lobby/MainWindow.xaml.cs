@@ -119,7 +119,7 @@ namespace Solo_Public_Lobby
 
         private void createConfig(string config)
         {
-            File.WriteAllText(config, "[{\n   'GameName': 'Destiny 2',\n   'udpPorts': '1119-1120,3097-3196,3724,4000,6112-6114',\n   'tcpPorts': '3074,3724,4000,6112-6114'\n},\n{\n    'GameName': 'GTA Online V',\n    'udpPorts': '6672',\n    'tcpPorts': ''\n}]");
+            File.WriteAllText(config, "[{\n   'GameName': 'Destiny 2',\n   'udpPorts': '1119-1120,3097-3196,3724,4000,6112-6114,27015-27200',\n   'tcpPorts': '3074,3724,4000,6112-6114'\n},\n{\n    'GameName': 'GTA V Online',\n    'udpPorts': '6672,61455-61458',\n    'tcpPorts': ''\n}]");
         }
 
         private void readConfig(string config)
