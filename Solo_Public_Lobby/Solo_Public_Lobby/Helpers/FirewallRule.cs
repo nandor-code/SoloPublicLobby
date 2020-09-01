@@ -32,19 +32,19 @@ namespace Solo_Public_Lobby.Helpers
 
                 if (!toggle)
                 {
-                    if( game.tcpPorts.Length > 0 )
+                    if( game.TcpPorts.Length > 0 )
                         firewallPolicy.Rules.Add(firewallRuleTCP);
-                    if (game.udpPorts.Length > 0)
+                    if (game.UdpPorts.Length > 0)
                         firewallPolicy.Rules.Add(firewallRuleUDP);
                 }
                 else
                 {
-                    if (game.tcpPorts.Length > 0)
+                    if (game.TcpPorts.Length > 0)
                     {
                         firewallPolicy.Rules.Remove(firewallRuleTCP.Name);
                         firewallPolicy.Rules.Add(firewallRuleTCP);
                     }
-                    if (game.udpPorts.Length > 0)
+                    if (game.UdpPorts.Length > 0)
                     {
                         firewallPolicy.Rules.Remove(firewallRuleUDP.Name);
                         firewallPolicy.Rules.Add(firewallRuleUDP);
@@ -82,18 +82,18 @@ namespace Solo_Public_Lobby.Helpers
 
                 if(!toggle)
                 {
-                    if (game.tcpPorts.Length > 0)
+                    if (game.TcpPorts.Length > 0)
                         firewallPolicy.Rules.Add(firewallRuleTCP);
-                    if (game.udpPorts.Length > 0)
+                    if (game.UdpPorts.Length > 0)
                         firewallPolicy.Rules.Add(firewallRuleUDP);
                 } else
                 {
-                    if (game.tcpPorts.Length > 0)
+                    if (game.TcpPorts.Length > 0)
                     {
                         firewallPolicy.Rules.Remove(firewallRuleTCP.Name);
                         firewallPolicy.Rules.Add(firewallRuleTCP);
                     }
-                    if (game.udpPorts.Length > 0)
+                    if (game.UdpPorts.Length > 0)
                     {
                         firewallPolicy.Rules.Remove(firewallRuleUDP.Name);
                         firewallPolicy.Rules.Add(firewallRuleUDP);
@@ -128,7 +128,7 @@ namespace Solo_Public_Lobby.Helpers
 
             // We want to block remote ports, not local ports
             //firewallRule.LocalPorts = proto == RuleProtocol.eRuleProtoTCP ? game.tcpPorts : game.udpPorts;
-            firewallRule.RemotePorts = proto == RuleProtocol.eRuleProtoTCP ? game.tcpPorts : game.udpPorts;
+            firewallRule.RemotePorts = proto == RuleProtocol.eRuleProtoTCP ? game.TcpPorts : game.UdpPorts;
             firewallRule.Name = proto == RuleProtocol.eRuleProtoTCP ? game.GetTCPRuleName(bOutbound ? "Outbound" : "Inbound") : game.GetUDPRuleName(bOutbound ? "Outbound" : "Inbound");
             firewallRule.Direction = bOutbound ? NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT : NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
 
@@ -156,13 +156,13 @@ namespace Solo_Public_Lobby.Helpers
 
                 INetFwPolicy2 firewallPolicy = (INetFwPolicy2)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
 
-                if (game.tcpPorts.Length > 0)
+                if (game.TcpPorts.Length > 0)
                 {
                     firewallPolicy.Rules.Remove(firewallRuleInboundTCP.Name);
                     firewallPolicy.Rules.Remove(firewallRuleOutboundTCP.Name);
                 }
 
-                if (game.udpPorts.Length > 0)
+                if (game.UdpPorts.Length > 0)
                 {
                     firewallPolicy.Rules.Remove(firewallRuleInboundUDP.Name);
                     firewallPolicy.Rules.Remove(firewallRuleOutboundUDP.Name);

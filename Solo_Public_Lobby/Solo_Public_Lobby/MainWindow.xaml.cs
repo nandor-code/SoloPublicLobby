@@ -29,24 +29,24 @@ namespace Solo_Public_Lobby
     {
         Game()
         {
-            active  = false;
-            created = false;
+            Active  = false;
+            Created = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Interface
         public string GameName { get; set; }
-        public string udpPorts { get; set; }
-        public string tcpPorts { get; set; }
-        public bool active { get { return _active; } set { _active = value; OnPropertyChanged("Enabled"); } }
-        public bool created { get; set; }
+        public string UdpPorts { get; set; }
+        public string TcpPorts { get; set; }
+        public bool Active { get { return _active; } set { _active = value; OnPropertyChanged("Enabled"); } }
+        public bool Created { get; set; }
 
         public string Enabled
         {
             get
             {
-                return active ? "✔" : "❌";
+                return Active ? "✔" : "❌";
             }
         }
 
@@ -119,7 +119,12 @@ namespace Solo_Public_Lobby
 
         private void createConfig(string config)
         {
-            File.WriteAllText(config, "[{\n   'GameName': 'Destiny 2',\n   'udpPorts': '1119-1120,3097-3196,3724,4000,6112-6114,27015-27200',\n   'tcpPorts': '3074,3724,4000,6112-6114'\n},\n{\n    'GameName': 'GTA V Online',\n    'udpPorts': '6672,61455-61458',\n    'tcpPorts': ''\n}]");
+            File.WriteAllText(
+                config,
+                "[\n"
+                    + "    {\n        \"GameName\": \"Destiny 2\",\n        \"UdpPorts\": \"1119-1120,3097-3196,3724,4000,6112-6114,27015-27200\",\n        \"TcpPorts\": \"3074,3724,4000,6112-6114\"\n    },\n" 
+                    + "    {\n        \"GameName\": \"GTA V Online\",\n        \"UdpPorts\": \"6672,61455-61458\",\n        \"TcpPorts\": \"\"\n    }\n"
+                    + "]");
         }
 
         private void readConfig(string config)
@@ -171,7 +176,7 @@ namespace Solo_Public_Lobby
                     lsbAddresses.Items.Refresh();
                     mWhitelist.Ips.Add(txbIpToAdd.Text);
                     DaWhitelist.SaveToJson(mWhitelist);
-                    getSelectedGame().created = false; getSelectedGame().active = false;
+                    getSelectedGame().Created = false; getSelectedGame().Active = false;
                     FirewallRule.DeleteRules( getSelectedGame() );
                     SetIpCount();
                     UpdateActive();
@@ -187,7 +192,7 @@ namespace Solo_Public_Lobby
                 addresses.Remove(IPAddress.Parse(lsbAddresses.SelectedItem.ToString()));
                 lsbAddresses.Items.Refresh();
                 DaWhitelist.SaveToJson(mWhitelist);
-                getSelectedGame().created = false; getSelectedGame().active = false;
+                getSelectedGame().Created = false; getSelectedGame().Active = false;
                 FirewallRule.DeleteRules( getSelectedGame() );
                 SetIpCount();
                 UpdateActive();
@@ -214,37 +219,37 @@ namespace Solo_Public_Lobby
             string remoteAddresses = RangeCalculator.GetRemoteAddresses(addresses);
 
             // If the firewall rules aren't set yet.
-            if (!getSelectedGame().created)
+            if (!getSelectedGame().Created)
             {
                 if (FirewallRule.CreateInbound(remoteAddresses, this.getSelectedGame(), true, false) &&
                     FirewallRule.CreateOutbound(remoteAddresses, this.getSelectedGame(), true, false))
                 {
-                    getSelectedGame().active = true;
-                    getSelectedGame().created = true;
+                    getSelectedGame().Active = true;
+                    getSelectedGame().Created = true;
                     UpdateActive();
                 }
                 return;
             }
 
             // If they are set but not enabled.
-            if (getSelectedGame().created && !getSelectedGame().active)
+            if (getSelectedGame().Created && !getSelectedGame().Active)
             {
                 if (FirewallRule.CreateInbound(remoteAddresses, this.getSelectedGame(), true, true) &&
                     FirewallRule.CreateOutbound(remoteAddresses, this.getSelectedGame(), true, true))
                 {
-                    getSelectedGame().active = true;
+                    getSelectedGame().Active = true;
                     UpdateActive();
                 }
                 return;
             }
 
             // If they are active and set.
-            if(getSelectedGame().created && getSelectedGame().active)
+            if(getSelectedGame().Created && getSelectedGame().Active)
             {
                 if (FirewallRule.CreateInbound(remoteAddresses, this.getSelectedGame(), false, true) &&
                     FirewallRule.CreateOutbound(remoteAddresses, this.getSelectedGame(), false, true))
                 {
-                    getSelectedGame().active = false;
+                    getSelectedGame().Active = false;
                     UpdateActive();
                 }
                 return;
@@ -255,7 +260,7 @@ namespace Solo_Public_Lobby
         {
             if (!bInitComplete) return;
 
-            if (getSelectedGame().active)
+            if (getSelectedGame().Active)
             {
                 btnEnableDisable.Background = ColorBrush.Green;
                 image4.Source = new BitmapImage(new Uri("/CodeSwine-Solo_Public_Lobby;component/ImageResources/locked.png", UriKind.Relative));
