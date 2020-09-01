@@ -1,27 +1,19 @@
-﻿using Solo_Public_Lobby.DataAccess;
+﻿using Newtonsoft.Json;
+using Solo_Public_Lobby.DataAccess;
 using Solo_Public_Lobby.Helpers;
 using Solo_Public_Lobby.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Interop;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Newtonsoft.Json;
 
 namespace Solo_Public_Lobby
 {
