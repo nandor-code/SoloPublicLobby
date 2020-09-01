@@ -16,7 +16,7 @@ namespace Solo_Public_Lobby.Helpers
         }
 
         /// <summary>
-        /// Sets, Removes or Toggles CodeSwine Outbound firewall rules.
+        /// Sets, Removes or Toggles Outbound firewall rules.
         /// </summary>
         /// <param name="addresses">Scope to block.</param>
         /// <param name="enabled">True to enable, false to disable the rule.</param>
@@ -66,7 +66,7 @@ namespace Solo_Public_Lobby.Helpers
         }
 
         /// <summary>
-        /// Sets, Removes or Toggles CodeSwine Inbound firewall rules.
+        /// Sets, Removes or Toggles Inbound firewall rules.
         /// </summary>
         /// <param name="addresses">Scope to block.</param>
         /// <param name="enabled">True to enable, false to disable the rule.</param>
@@ -119,16 +119,21 @@ namespace Solo_Public_Lobby.Helpers
             firewallRule.Protocol = (int)proto;
             firewallRule.Enabled = enabled;
             firewallRule.InterfaceTypes = "All";
+            
             if (!string.IsNullOrEmpty(addresses))
             {
                 firewallRule.RemoteAddresses = addresses;
             }
-
-            //Console.WriteLine(addresses);
-
-            // We want to block remote ports, not local ports
-            //firewallRule.LocalPorts = proto == RuleProtocol.eRuleProtoTCP ? game.tcpPorts : game.udpPorts;
-            firewallRule.RemotePorts = proto == RuleProtocol.eRuleProtoTCP ? game.TcpPorts : game.UdpPorts;
+            
+            if (game.BlockLocal)
+            {
+                firewallRule.LocalPorts = proto == RuleProtocol.eRuleProtoTCP ? game.TcpPorts : game.UdpPorts;
+            }
+            else
+            {
+                firewallRule.RemotePorts = proto == RuleProtocol.eRuleProtoTCP ? game.TcpPorts : game.UdpPorts;
+            }            
+            
             firewallRule.Name = proto == RuleProtocol.eRuleProtoTCP ? game.GetTCPRuleName(bOutbound ? "Outbound" : "Inbound") : game.GetUDPRuleName(bOutbound ? "Outbound" : "Inbound");
             firewallRule.Direction = bOutbound ? NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_OUT : NET_FW_RULE_DIRECTION_.NET_FW_RULE_DIR_IN;
 
@@ -136,7 +141,7 @@ namespace Solo_Public_Lobby.Helpers
         }
 
         /// <summary>
-        /// Removes CodeSwine Inbound & Outbound firewall rules at program startup.
+        /// Removes Inbound & Outbound firewall rules at program startup.
         /// </summary>
         public static void DeleteRules( Game game )
         {

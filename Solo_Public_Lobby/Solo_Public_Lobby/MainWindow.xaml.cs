@@ -253,13 +253,13 @@ namespace Solo_Public_Lobby
             if (getSelectedGame().Active)
             {
                 btnEnableDisable.Background = ColorBrush.Green;
-                image4.Source = new BitmapImage(new Uri("/CodeSwine-Solo_Public_Lobby;component/ImageResources/locked.png", UriKind.Relative));
+                image4.Source = new BitmapImage(new Uri("/Solo_Public_Lobby;component/ImageResources/locked.png", UriKind.Relative));
                 lblLock.Content = "Rules active." + Environment.NewLine + "Click to deactivate!";
             }
             else
             {
                 btnEnableDisable.Background = ColorBrush.Red;
-                image4.Source = new BitmapImage(new Uri("/CodeSwine-Solo_Public_Lobby;component/ImageResources/unlocked.png", UriKind.Relative));
+                image4.Source = new BitmapImage(new Uri("/Solo_Public_Lobby;component/ImageResources/unlocked.png", UriKind.Relative));
                 lblLock.Content = "Rules not active." + Environment.NewLine + "Click to activate!";
             }
         }
