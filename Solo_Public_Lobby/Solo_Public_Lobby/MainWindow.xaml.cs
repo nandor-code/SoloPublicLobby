@@ -39,6 +39,7 @@ namespace Solo_Public_Lobby
         public string GameName { get; set; }
         public string UdpPorts { get; set; }
         public string TcpPorts { get; set; }
+        public bool BlockLocal { get; set; }
         public bool Active { get { return _active; } set { _active = value; OnPropertyChanged("Enabled"); } }
         public bool Created { get; set; }
 
@@ -117,15 +118,12 @@ namespace Solo_Public_Lobby
             DataContext = this;
         }
 
-        private void createConfig(string config)
-        {
-            File.WriteAllText(
+        private void createConfig(string config) => File.WriteAllText(
                 config,
                 "[\n"
-                    + "    {\n        \"GameName\": \"Destiny 2\",\n        \"UdpPorts\": \"1119-1120,3097-3196,3724,4000,6112-6114,27015-27200\",\n        \"TcpPorts\": \"3074,3724,4000,6112-6114\"\n    },\n" 
-                    + "    {\n        \"GameName\": \"GTA V Online\",\n        \"UdpPorts\": \"6672,61455-61458\",\n        \"TcpPorts\": \"\"\n    }\n"
+                    + "    {\n        \"GameName\": \"Destiny 2\",\n        \"UdpPorts\": \"1119-1120,3097-3196,3724,4000,6112-6114,27015-27200\",\n        \"TcpPorts\": \"3074,3724,4000,6112-6114\",\n        \"BlockLocal\": \"false\"\n    },\n"
+                    + "    {\n        \"GameName\": \"GTA V Online\",\n        \"UdpPorts\": \"6672,61455-61458\",\n        \"TcpPorts\": \"\",\n        \"BlockLocal\": \"true\"\n    }\n"
                     + "]");
-        }
 
         private void readConfig(string config)
         {
